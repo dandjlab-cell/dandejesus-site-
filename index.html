@@ -1533,25 +1533,34 @@ if (nodeField) {
 // ── STAT COUNTERS ──
 document.querySelectorAll('[data-anim="stat"]').forEach(el => {
   const numEl = el.querySelector('.stat-num');
-  const target = parseFloat(numEl.dataset.count);
-  const suffix = numEl.dataset.suffix || '+';
-  const isDecimal = target < 10 && target % 1 !== 0;
 
-  gsap.fromTo(el, { opacity: 0, y: 40 }, {
-    opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-    scrollTrigger: {
-      trigger: el, start: 'top 85%', toggleActions: 'play none none none',
-      onEnter: () => {
-        gsap.to({ val: 0 }, {
-          val: target, duration: 2, ease: 'power2.out',
-          onUpdate: function() {
-            const v = this.targets()[0].val;
-            numEl.textContent = isDecimal ? v.toFixed(1) + suffix : Math.floor(v) + suffix;
-          }
-        });
+  if (numEl) {
+    const target = parseFloat(numEl.dataset.count);
+    const suffix = numEl.dataset.suffix || '+';
+    const isDecimal = target < 10 && target % 1 !== 0;
+
+    gsap.fromTo(el, { opacity: 0, y: 40 }, {
+      opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: {
+        trigger: el, start: 'top 85%', toggleActions: 'play none none none',
+        onEnter: () => {
+          gsap.to({ val: 0 }, {
+            val: target, duration: 2, ease: 'power2.out',
+            onUpdate: function() {
+              const v = this.targets()[0].val;
+              numEl.textContent = isDecimal ? v.toFixed(1) + suffix : Math.floor(v) + suffix;
+            }
+          });
+        }
       }
-    }
-  });
+    });
+  } else {
+    // Stat elements without .stat-num (e.g. the Outcomes section) — just fade in
+    gsap.fromTo(el, { opacity: 0, y: 40 }, {
+      opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+    });
+  }
 });
 
 // ── ABOUT: slide from sides ──
