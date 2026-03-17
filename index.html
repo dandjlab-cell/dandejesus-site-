@@ -131,7 +131,11 @@ nav {
   overflow: hidden; display: flex; align-items: flex-end;
   padding: 60px 40px;
 }
-.hero-video { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-video { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.07); }
+.hero-black-cover {
+  position: absolute; inset: 0; z-index: 0;
+  background: #000; pointer-events: none;
+}
 .hero-video-placeholder {
   position: absolute; inset: 0; z-index: 0;
   background: transparent;
@@ -177,6 +181,13 @@ nav {
   display: flex; justify-content: space-between; align-items: baseline;
   margin-bottom: 48px;
 }
+.see-all-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted); text-decoration: none;
+  transition: color 0.3s ease, opacity 0.3s ease; white-space: nowrap;
+  opacity: 0.7;
+}
+.see-all-link:hover { color: var(--accent); opacity: 1; }
 .section-number {
   font-family: var(--mono); font-size: 13px; letter-spacing: 0.15em;
   color: var(--accent); text-transform: uppercase; margin-bottom: 16px;
@@ -330,7 +341,7 @@ nav {
 }
 
 /* ════════════════════════════════════
-   WORK LIST — editorial row layout
+   WORK LIST — sticky stacking cards
    ════════════════════════════════════ */
 .work-list { margin-top: 0; }
 
@@ -339,11 +350,28 @@ nav {
   grid-template-columns: 35% 1fr;
   gap: 48px;
   align-items: center;
-  padding: 40px 0;
-  border-top: 1px solid var(--border);
+  padding: 40px 48px;
   cursor: pointer;
+  /* Sticky stacking */
+  position: sticky;
+  background: var(--bg);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  transition: transform 0.5s var(--smooth), box-shadow 0.5s ease;
+  z-index: 1;
 }
-.work-row:last-child { border-bottom: 1px solid var(--border); }
+/* Incremental top offsets — each card peeks above the next */
+.work-row:nth-child(1) { top: 100px; z-index: 4; }
+.work-row:nth-child(2) { top: 120px; z-index: 3; }
+.work-row:nth-child(3) { top: 140px; z-index: 2; }
+.work-row:nth-child(4) { top: 160px; z-index: 1; }
+
+/* Hover: lift the card */
+.work-row:hover {
+  box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+}
 
 /* Left: text info — restrained, editorial */
 .work-row-info { padding-top: 8px; }
@@ -351,16 +379,18 @@ nav {
   font-family: var(--sans); font-weight: 400;
   font-size: 1.05rem;
   color: var(--text); line-height: 1.3; margin-bottom: 10px;
-  transition: color 0.4s;
+  transition: color 0.4s, transform 0.4s var(--smooth);
   letter-spacing: -0.01em;
 }
-.work-row:hover .work-row-info h3 { color: var(--accent); }
+.work-row:hover .work-row-info h3 { color: var(--accent); transform: translateX(4px); }
 .work-row-info .wr-desc {
   font-family: var(--sans); font-weight: 300;
   font-size: 13px; line-height: 1.6;
   color: var(--text-muted); margin-bottom: 20px;
-  max-width: 240px;
+  max-width: 280px;
+  transition: opacity 0.4s ease;
 }
+.work-row:hover .work-row-info .wr-desc { opacity: 0.85; }
 .work-row-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .work-row-tags span {
   font-family: var(--mono); font-size: 8px;
@@ -369,7 +399,9 @@ nav {
   border: 1px solid var(--border);
   border-radius: 2px; padding: 4px 8px;
   background: transparent;
+  transition: border-color 0.3s ease, color 0.3s ease;
 }
+.work-row:hover .work-row-tags span { border-color: var(--accent); color: var(--accent); opacity: 0.7; }
 
 /* Right: thumbnail with hover video */
 .work-row-thumb {
@@ -382,8 +414,8 @@ nav {
   transition: transform 0.7s var(--smooth), box-shadow 0.6s ease;
 }
 .work-row:hover .work-row-thumb {
-  transform: scale(1.015);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  transform: scale(1.02);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
 .work-row-thumb img {
   width: 100%; height: 100%; object-fit: cover;
@@ -392,7 +424,7 @@ nav {
 .work-row-thumb video {
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; transition: opacity 0.5s ease;
+  opacity: 0; transition: opacity 0.6s ease;
 }
 .work-row:hover .work-row-thumb video { opacity: 1; }
 .work-row:hover .work-row-thumb img { opacity: 0.2; }
@@ -976,9 +1008,13 @@ footer a:hover { color: var(--accent); }
 
 /* ── MOBILE ── */
 @media (max-width: 900px) {
-  .work-row { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
+  .work-row { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; }
   .work-row-info { order: 2; }
   .work-row-thumb { order: 1; }
+  .work-row:nth-child(1) { top: 80px; }
+  .work-row:nth-child(2) { top: 92px; }
+  .work-row:nth-child(3) { top: 104px; }
+  .work-row:nth-child(4) { top: 116px; }
   .work-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
@@ -1038,7 +1074,9 @@ footer a:hover { color: var(--accent); }
      ═══════════════════════════════════════════════ -->
 <section class="hero" id="top">
   <div class="hero-video-placeholder"></div>
-  <!-- SWAP: <video class="hero-video" autoplay loop muted playsinline src="hero-reel.mp4"></video> -->
+  <!-- SWAP src with your BunnyCDN hero reel URL -->
+  <video class="hero-video" autoplay loop muted playsinline src=""></video>
+  <div class="hero-black-cover"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="anim hero-title">Producer. DP. Editor.<br>A decade of making<br>things move.</h1>
@@ -1103,9 +1141,9 @@ footer a:hover { color: var(--accent); }
   <p class="ai-teaser-text anim">Custom AI tools run the repetitive work. I run the creative.</p>
 
   <!-- SWAP: replace src with your BunnyCDN mp4 URL -->
-  <div class="ai-teaser-video anim">
+  <div class="ai-teaser-video anim" data-anim="ai-video">
     <video autoplay loop muted playsinline>
-      <!-- <source src="https://your-bunnycdn-url.b-cdn.net/ai-pipeline-loop.mp4" type="video/mp4"> -->
+      <source src="" type="video/mp4">
     </video>
     <div class="placeholder-label">Looping mp4 — AI Pipeline Demo</div>
   </div>
@@ -1121,8 +1159,8 @@ footer a:hover { color: var(--accent); }
   <div class="section-number anim">01</div>
   <div class="section-header">
     <h2 class="section-title anim" style="margin-bottom:0;font-family:var(--serif);font-style:italic;font-size:clamp(1.2rem,2.2vw,1.6rem);">Selected Work</h2>
-    <a href="#" class="see-all-link anim" onclick="toggleWorkView(event)" style="font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color 0.3s;white-space:nowrap;">
-      See all &rarr;
+    <a href="#" class="see-all-link anim" onclick="toggleWorkView(event)">
+      See all work &rarr;
     </a>
   </div>
 
@@ -1140,7 +1178,8 @@ footer a:hover { color: var(--accent); }
         </div>
       </div>
       <div class="work-row-thumb" style="background: linear-gradient(135deg, #A3A380 0%, #6b6b52 100%);">
-        <!-- SWAP: <video src="preview-youtube.mp4" loop muted playsinline></video> -->
+        <!-- SWAP src with BunnyCDN URL -->
+        <video src="" loop muted playsinline></video>
         <div class="thumb-placeholder">YouTube</div>
       </div>
     </div>
@@ -1156,6 +1195,8 @@ footer a:hover { color: var(--accent); }
         </div>
       </div>
       <div class="work-row-thumb" style="background: linear-gradient(135deg, #D6CE93 0%, #8a8460 100%);">
+        <!-- SWAP src with BunnyCDN URL -->
+        <video src="" loop muted playsinline></video>
         <div class="thumb-placeholder">BlackRock</div>
       </div>
     </div>
@@ -1171,6 +1212,8 @@ footer a:hover { color: var(--accent); }
         </div>
       </div>
       <div class="work-row-thumb" style="background: linear-gradient(135deg, #D8A48F 0%, #9a6e5c 100%);">
+        <!-- SWAP src with BunnyCDN URL -->
+        <video src="" loop muted playsinline></video>
         <div class="thumb-placeholder">Branded</div>
       </div>
     </div>
@@ -1186,6 +1229,8 @@ footer a:hover { color: var(--accent); }
         </div>
       </div>
       <div class="work-row-thumb" style="background: linear-gradient(135deg, #BB8588 0%, #7a5658 100%);">
+        <!-- SWAP src with BunnyCDN URL -->
+        <video src="" loop muted playsinline></video>
         <div class="thumb-placeholder">Documentary</div>
       </div>
     </div>
@@ -1872,11 +1917,16 @@ if (saved) document.documentElement.setAttribute('data-theme', saved);
 // ── HERO ANIMATIONS ──
 const heroTL = gsap.timeline({ delay: 0.2 });
 heroTL
-  .fromTo('.hero-title', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' })
-  .fromTo('.hero-sub', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=0.7')
-  .fromTo('.hero-scroll-hint', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, '-=0.4');
+  // Black cover fades out, revealing the video underneath
+  .to('.hero-black-cover', { opacity: 0, duration: 1.8, ease: 'power2.inOut' }, 0)
+  // Video zooms from 107% to 100%
+  .to('.hero-video', { scale: 1, duration: 2.4, ease: 'power2.out' }, 0)
+  // Text fades in after the reveal starts
+  .fromTo('.hero-title', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' }, 0.6)
+  .fromTo('.hero-sub', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 1.0)
+  .fromTo('.hero-scroll-hint', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 1.4);
 
-// Hero parallax
+// Hero parallax on scroll
 gsap.to('.hero-content', { y: -80, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 gsap.to('.hero-video-placeholder, .hero-video', { scale: 1.1, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
@@ -1929,19 +1979,49 @@ if (aiTeaser) {
       scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' }
     });
   });
+
+  // AI Pipeline video — scale up + fade in on scroll
+  const aiVid = aiTeaser.querySelector('[data-anim="ai-video"]');
+  if (aiVid) {
+    gsap.fromTo(aiVid,
+      { opacity: 0, scale: 0.97, y: 30 },
+      { opacity: 1, scale: 1, y: 0, duration: 1.2, ease: 'power3.out',
+        scrollTrigger: { trigger: aiVid, start: 'top 88%', toggleActions: 'play none none none' }
+      }
+    );
+  }
 }
 
-// ── WORK ROWS: stagger slide in ──
-document.querySelectorAll('[data-anim="work-row"]').forEach((el, i) => {
+// ── WORK ROWS: stacking cards with scale-down on push ──
+const workRows = document.querySelectorAll('[data-anim="work-row"]');
+
+// Initial entrance: each card slides up into view
+workRows.forEach((el, i) => {
   gsap.fromTo(el,
-    { opacity: 0, y: 50 },
+    { opacity: 0, y: 60 },
     {
       opacity: 1, y: 0,
       duration: 0.9, ease: 'power3.out',
       delay: i * 0.08,
-      scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+      scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none none' }
     }
   );
+});
+
+// Stacking effect: as the next card pushes over, the current card scales down slightly
+workRows.forEach((el, i) => {
+  if (i < workRows.length - 1) {
+    gsap.to(el, {
+      scale: 0.96,
+      opacity: 0.6,
+      scrollTrigger: {
+        trigger: workRows[i + 1],
+        start: 'top bottom',
+        end: 'top 30%',
+        scrub: 0.5,
+      }
+    });
+  }
 });
 
 // ── TOGGLE LIST / GRID VIEW ──
