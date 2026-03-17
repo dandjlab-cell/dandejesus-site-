@@ -342,8 +342,10 @@ nav {
 
 /* ════════════════════════════════════
    WORK LIST — sticky stacking cards
+   Cards pin at top, each new card scrolls up and
+   overlaps the previous — but never fully covers it.
    ════════════════════════════════════ */
-.work-list { margin-top: 0; }
+.work-list { margin-top: 0; padding-bottom: 40px; }
 
 .work-row {
   display: grid;
@@ -357,16 +359,16 @@ nav {
   background: var(--bg);
   border-radius: 20px;
   border: 1px solid var(--border);
-  margin-bottom: 24px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
   transition: transform 0.5s var(--smooth), box-shadow 0.5s ease;
-  z-index: 1;
 }
-/* Incremental top offsets — each card peeks above the next */
-.work-row:nth-child(1) { top: 100px; z-index: 4; }
-.work-row:nth-child(2) { top: 120px; z-index: 3; }
-.work-row:nth-child(3) { top: 140px; z-index: 2; }
-.work-row:nth-child(4) { top: 160px; z-index: 1; }
+/* Each new card scrolls up IN FRONT of the previous one.
+   Increasing top offset so previous cards peek out above.
+   Increasing z-index so each new card covers the last. */
+.work-row:nth-child(1) { top: 100px; z-index: 1; margin-bottom: 40px; }
+.work-row:nth-child(2) { top: 112px; z-index: 2; margin-bottom: 40px; }
+.work-row:nth-child(3) { top: 124px; z-index: 3; margin-bottom: 40px; }
+.work-row:nth-child(4) { top: 136px; z-index: 4; margin-bottom: 0; }
 
 /* Hover: lift the card */
 .work-row:hover {
@@ -1011,10 +1013,10 @@ footer a:hover { color: var(--accent); }
   .work-row { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; }
   .work-row-info { order: 2; }
   .work-row-thumb { order: 1; }
-  .work-row:nth-child(1) { top: 80px; }
-  .work-row:nth-child(2) { top: 92px; }
-  .work-row:nth-child(3) { top: 104px; }
-  .work-row:nth-child(4) { top: 116px; }
+  .work-row:nth-child(1) { top: 70px; }
+  .work-row:nth-child(2) { top: 80px; }
+  .work-row:nth-child(3) { top: 90px; }
+  .work-row:nth-child(4) { top: 100px; }
   .work-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
@@ -1992,15 +1994,17 @@ if (aiTeaser) {
   }
 }
 
-// ── WORK ROWS: stacking cards with scale-down on push ──
+// ── WORK ROWS: stacking cards ──
 const workRows = document.querySelectorAll('[data-anim="work-row"]');
 
-// Initial entrance: each card slides up into view
+// Initial entrance: each card slides up into view.
+// NOTE: no opacity animation — stacking cards must stay fully opaque
+// so the front card covers the ones behind it.
 workRows.forEach((el, i) => {
   gsap.fromTo(el,
-    { opacity: 0, y: 60 },
+    { y: 60 },
     {
-      opacity: 1, y: 0,
+      y: 0,
       duration: 0.9, ease: 'power3.out',
       delay: i * 0.08,
       scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none none' }
@@ -2008,21 +2012,8 @@ workRows.forEach((el, i) => {
   );
 });
 
-// Stacking effect: as the next card pushes over, the current card scales down slightly
-workRows.forEach((el, i) => {
-  if (i < workRows.length - 1) {
-    gsap.to(el, {
-      scale: 0.96,
-      opacity: 0.6,
-      scrollTrigger: {
-        trigger: workRows[i + 1],
-        start: 'top bottom',
-        end: 'top 30%',
-        scrub: 0.5,
-      }
-    });
-  }
-});
+// Stacking: pure CSS sticky handles the collapse.
+// No GSAP scale — scaling causes gaps that let text bleed through.
 
 // ── TOGGLE LIST / GRID VIEW ──
 let gridVisible = false;
