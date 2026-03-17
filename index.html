@@ -1007,6 +1007,9 @@ footer a:hover { color: var(--accent); }
 
 /* ── GSAP ── */
 .anim { opacity: 0; }
+/* Work rows must ALWAYS be opaque so stacking cards don't bleed through.
+   Entrance uses y-transform only, no opacity fade. */
+.work-row.anim { opacity: 1; }
 
 /* ── MOBILE ── */
 @media (max-width: 900px) {
@@ -1997,14 +2000,11 @@ if (aiTeaser) {
 // ── WORK ROWS: stacking cards ──
 const workRows = document.querySelectorAll('[data-anim="work-row"]');
 
-// Initial entrance: each card slides up into view.
-// NOTE: no opacity animation — stacking cards must stay fully opaque
-// so the front card covers the ones behind it.
+// Initial entrance: slide up only — cards are always fully opaque (no fade).
 workRows.forEach((el, i) => {
-  gsap.fromTo(el,
-    { y: 60 },
+  gsap.from(el,
     {
-      y: 0,
+      y: 60,
       duration: 0.9, ease: 'power3.out',
       delay: i * 0.08,
       scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none none' }
