@@ -68,6 +68,14 @@ body {
 }
 body.overlay-open { overflow: hidden; }
 
+/* ── SCROLL PROGRESS BAR ── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: var(--accent); z-index: 101;
+  transform-origin: left; transform: scaleX(0);
+  transition: none; will-change: transform;
+}
+
 /* ── SCROLL GRADIENT BACKGROUND ── */
 .scroll-gradient {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -149,9 +157,9 @@ nav {
 }
 .hero-content { position: relative; z-index: 2; max-width: 800px; }
 .hero-content h1 {
-  font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 5rem);
-  color: var(--text); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px;
-  transition: color 0.4s ease;
+  font-family: var(--serif); font-size: clamp(3.5rem, 8vw, 6.5rem);
+  color: var(--text); line-height: 0.95; letter-spacing: -0.04em; margin-bottom: 20px;
+  transition: color 0.4s ease; max-width: 960px;
 }
 .hero-content p {
   font-family: var(--sans); font-weight: 300;
@@ -176,7 +184,13 @@ nav {
 }
 
 /* ── SECTION ── */
-.section { padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+.section { padding: 100px 40px; max-width: 1200px; margin: 0 auto; position: relative; overflow: hidden; }
+.section-watermark {
+  position: absolute; top: -0.1em; right: 40px;
+  font-family: var(--serif); font-size: clamp(10rem, 18vw, 16rem);
+  opacity: 0.04; pointer-events: none; color: var(--text);
+  line-height: 1; transition: color 0.4s ease;
+}
 .section-header {
   display: flex; justify-content: space-between; align-items: baseline;
   margin-bottom: 48px;
@@ -184,10 +198,10 @@ nav {
 .see-all-link {
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--text-muted); text-decoration: none;
-  transition: color 0.3s ease, opacity 0.3s ease; white-space: nowrap;
+  transition: color 0.3s ease, opacity 0.3s ease, letter-spacing 0.3s ease; white-space: nowrap;
   opacity: 0.7;
 }
-.see-all-link:hover { color: var(--accent); opacity: 1; }
+.see-all-link:hover { color: var(--accent); opacity: 1; letter-spacing: 0.14em; }
 .section-number {
   font-family: var(--mono); font-size: 13px; letter-spacing: 0.15em;
   color: var(--accent); text-transform: uppercase; margin-bottom: 16px;
@@ -262,6 +276,26 @@ nav {
 /* Pause on hover */
 .brands-section:hover .marquee-row {
   animation-play-state: paused;
+}
+
+/* ════════════════════════════════════
+   STAT TICKER STRIP
+   ════════════════════════════════════ */
+.stat-ticker {
+  width: 100%; background: var(--accent); padding: 16px 0;
+  overflow: hidden; position: relative; z-index: 1;
+  margin: 0; border: none;
+}
+.stat-ticker-track {
+  display: flex; white-space: nowrap; width: fit-content;
+  gap: 0; font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--cream-text); animation: ticker 25s linear infinite;
+}
+.stat-ticker-track span { flex-shrink: 0; padding: 0 32px; }
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 @media (max-width: 768px) {
@@ -372,7 +406,13 @@ nav {
   gap: 16px;
   padding: 18px 48px 14px;
   border-bottom: 1px solid var(--border);
+  border-left: 3px solid transparent;
+  transition: border-left-color 0.3s ease;
 }
+.work-row:nth-child(1) .work-row-tab { border-left-color: #A3A380; }
+.work-row:nth-child(2) .work-row-tab { border-left-color: #D6CE93; }
+.work-row:nth-child(3) .work-row-tab { border-left-color: #D8A48F; }
+.work-row:nth-child(4) .work-row-tab { border-left-color: #BB8588; }
 .work-row-tab .tab-num {
   font-family: var(--mono);
   font-size: 11px;
@@ -437,6 +477,22 @@ nav {
   font-weight: 300;
 }
 .work-row:hover .work-row-tags { color: var(--accent); opacity: 0.7; }
+
+/* ── Custom cursor on work cards ── */
+.work-cursor {
+  position: fixed; width: 72px; height: 72px;
+  border-radius: 50%; background: var(--accent);
+  color: var(--cream-text); display: flex;
+  align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 500; pointer-events: none; z-index: 999;
+  opacity: 0; transform: scale(0.5) translate(-50%, -50%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.work-cursor.active {
+  opacity: 1; transform: scale(1) translate(-50%, -50%);
+}
 
 /* Right: thumbnail with hover video */
 .work-row-thumb {
@@ -1014,10 +1070,15 @@ nav {
 .node-field.active .node[data-i="5"] { opacity: 1; transition: opacity 0.5s ease 1.05s; }
 
 /* ── CONTACT ── */
-.contact-section { text-align: center; padding: 140px 40px 100px; }
+.contact-section {
+  text-align: center; padding: 40px;
+  min-height: 80vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
 .contact-section h2 {
-  font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 4.5rem);
+  font-family: var(--serif); font-size: clamp(2.8rem, 6vw, 5.5rem);
   color: var(--text); margin-bottom: 20px;
+  transition: color 0.4s ease;
 }
 .contact-section p {
   font-family: var(--sans); font-weight: 300; color: var(--text-muted);
@@ -1088,8 +1149,10 @@ footer a:hover { color: var(--accent); }
 </head>
 <body>
 
+<div class="scroll-progress" id="scrollProgress"></div>
 <div class="scroll-gradient"><canvas id="gradientCanvas"></canvas></div>
 <div class="texture-grain"></div>
+<div class="work-cursor" id="workCursor">View</div>
 
 <!-- ─── NAV ─── -->
 <nav>
@@ -1194,6 +1257,7 @@ footer a:hover { color: var(--accent); }
      01 — WORK (editorial list + See all grid)
      ═══════════════════════════════════════════════ -->
 <div class="section" id="work">
+  <div class="section-watermark">01</div>
   <div class="section-number anim">01</div>
   <div class="section-header">
     <h2 class="section-title anim" style="margin-bottom:0;font-family:var(--serif);font-style:italic;font-size:clamp(1.2rem,2.2vw,1.6rem);">Selected Work</h2>
@@ -1324,12 +1388,22 @@ footer a:hover { color: var(--accent); }
 </div>
 
 
+<!-- ═══════════════════════════════════════════════
+     STAT TICKER STRIP
+     ═══════════════════════════════════════════════ -->
+<div class="stat-ticker" aria-hidden="true">
+  <div class="stat-ticker-track">
+    <span>327+ Videos</span><span>·</span><span>1.9M+ Watch Hours</span><span>·</span><span>10 Years</span><span>·</span><span>2 Brands Built</span><span>·</span><span>1 Feature Documentary</span><span>·</span><span>Fortune 500 Clients</span><span>·</span>
+    <span>327+ Videos</span><span>·</span><span>1.9M+ Watch Hours</span><span>·</span><span>10 Years</span><span>·</span><span>2 Brands Built</span><span>·</span><span>1 Feature Documentary</span><span>·</span><span>Fortune 500 Clients</span><span>·</span>
+  </div>
+</div>
 
 
 <!-- ═══════════════════════════════════════════════
      02 — PROCESS
      ═══════════════════════════════════════════════ -->
 <div class="section" id="process">
+  <div class="section-watermark">02</div>
   <div class="section-number anim">02</div>
   <h2 class="section-title serif anim">How I Work in Post Now</h2>
 
@@ -1463,6 +1537,7 @@ footer a:hover { color: var(--accent); }
      03 — ABOUT
      ═══════════════════════════════════════════════ -->
 <div class="section" id="about">
+  <div class="section-watermark">03</div>
   <div class="section-number anim">03</div>
   <h2 class="section-title serif anim">About</h2>
 
@@ -1984,10 +2059,33 @@ heroTL
 gsap.to('.hero-content', { y: -80, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 gsap.to('.hero-video-placeholder, .hero-video', { scale: 1.1, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
-// ── SECTION HEADERS ──
-document.querySelectorAll('.section-number.anim, .section-title.anim, .section-subtitle.anim').forEach(el => {
-  gsap.fromTo(el, { opacity: 0, y: 50 }, {
-    opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+// ── SECTION HEADERS: varied text reveal animations ──
+// Section numbers: slide in from left
+document.querySelectorAll('.section-number.anim').forEach(el => {
+  gsap.fromTo(el, { opacity: 0, x: -20 }, {
+    opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+  });
+});
+
+// Section titles: clip reveal from bottom
+document.querySelectorAll('.section-title.anim').forEach(el => {
+  // Wrap content in span if not already wrapped
+  if (!el.querySelector('span')) {
+    el.innerHTML = `<span>${el.innerHTML}</span>`;
+  }
+  const span = el.querySelector('span');
+  gsap.set(span, { overflow: 'hidden', display: 'block' });
+  gsap.fromTo(span, { y: '100%' }, {
+    y: 0, duration: 0.9, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+  });
+});
+
+// Section subtitles: fade up gently
+document.querySelectorAll('.section-subtitle.anim').forEach(el => {
+  gsap.fromTo(el, { opacity: 0, y: 25 }, {
+    opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
     scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
   });
 });
@@ -2242,6 +2340,80 @@ const vObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 loopVids.forEach(v => vObs.observe(v));
 
+// ── SCROLL PROGRESS BAR ──
+window.addEventListener('scroll', () => {
+  const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollMax > 0 ? window.scrollY / scrollMax : 0;
+  const progressBar = document.getElementById('scrollProgress');
+  if (progressBar) {
+    progressBar.style.transform = `scaleX(${progress})`;
+  }
+});
+
+// ── WORK CURSOR: smooth follow + hover states ──
+const workCursor = document.getElementById('workCursor');
+const workRows = document.querySelectorAll('.work-row');
+let cursorX = 0, cursorY = 0;
+
+if (workCursor) {
+  // Smooth follower using GSAP ticker
+  let targetX = 0, targetY = 0;
+  gsap.ticker.add(() => {
+    cursorX += (targetX - cursorX) * 0.15;
+    cursorY += (targetY - cursorY) * 0.15;
+    workCursor.style.left = cursorX + 'px';
+    workCursor.style.top = cursorY + 'px';
+  });
+
+  // Mouse move to update target
+  document.addEventListener('mousemove', e => {
+    targetX = e.clientX;
+    targetY = e.clientY;
+  });
+
+  // Work row hover
+  workRows.forEach(row => {
+    row.style.cursor = 'none';
+    row.addEventListener('mouseenter', () => workCursor.classList.add('active'));
+    row.addEventListener('mouseleave', () => workCursor.classList.remove('active'));
+  });
+}
+
+// ── SECTION WATERMARKS: parallax on scroll ──
+document.querySelectorAll('.section-watermark').forEach(watermark => {
+  gsap.to(watermark, {
+    y: -50,
+    scrollTrigger: {
+      trigger: watermark.parentElement,
+      start: 'top center',
+      end: 'bottom center',
+      scrub: true
+    }
+  });
+});
+
+// ── CONTACT SECTION ANIMATIONS ──
+const contactHeadline = document.querySelector('.contact-section h2');
+const contactBtn = document.querySelector('.contact-btn');
+if (contactHeadline) {
+  gsap.fromTo(contactHeadline,
+    { scale: 0.88, y: 40, opacity: 0 },
+    {
+      scale: 1, y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
+      scrollTrigger: { trigger: contactHeadline, start: 'top 80%', toggleActions: 'play none none none' }
+    }
+  );
+}
+if (contactBtn) {
+  gsap.fromTo(contactBtn,
+    { scale: 0.8, y: 60, opacity: 0 },
+    {
+      scale: 1, y: 0, opacity: 1, duration: 1, ease: 'back.out(2)', delay: 0.3,
+      scrollTrigger: { trigger: contactBtn, start: 'top 85%', toggleActions: 'play none none none' }
+    }
+  );
+}
+
 // ── Nav hide on scroll ──
 let lastY = 0;
 window.addEventListener('scroll', () => {
@@ -2295,18 +2467,21 @@ window.addEventListener('scroll', () => {
         { pos: 1.00, colors: [[14,12,12],    [14,12,12],    [14,12,12]] },      // near-black close
       ];
     } else {
-      // Light mode: full brightness palette
+      // Light mode: full brightness palette with creative direction color chapters
       return [
-        { pos: 0.00, colors: [[239,235,206],[245,242,218],[232,228,195]] },  // Vanilla Cream
-        { pos: 0.10, colors: [[210,215,185],[220,225,195],[200,205,172]] },  // Sage light hint
-        { pos: 0.20, colors: [[178,180,148],[190,192,160],[168,170,138]] },  // Dry Sage mid — work begins
-        { pos: 0.32, colors: [[163,163,128],[175,175,142],[150,150,115]] },  // Dry Sage full
-        { pos: 0.42, colors: [[214,206,147],[225,218,162],[200,192,132]] },  // Vanilla Custard
-        { pos: 0.52, colors: [[239,235,206],[245,240,215],[232,228,195]] },  // Vanilla Cream
-        { pos: 0.64, colors: [[216,164,143],[228,178,158],[205,152,130]] },  // Light Bronze
-        { pos: 0.78, colors: [[187,133,136],[200,148,150],[175,122,125]] },  // Dusty Rose
-        { pos: 0.90, colors: [[225,210,198],[235,222,210],[218,202,188]] },  // Dusty Rose lightened
-        { pos: 1.00, colors: [[239,235,206],[239,235,206],[239,235,206]] },  // Vanilla Cream close
+        { pos: 0.00, colors: [[244,237,228],[244,237,228],[244,237,228]] },  // 0.00-0.08: Warm vanilla cream
+        { pos: 0.08, colors: [[244,237,228],[244,237,228],[244,237,228]] },
+        { pos: 0.08, colors: [[200,204,172],[200,204,172],[200,204,172]] },  // 0.08-0.40: Sage greens gradually deepening
+        { pos: 0.24, colors: [[185,188,150],[185,188,150],[185,188,150]] },  // Sage mid-transition
+        { pos: 0.40, colors: [[165,168,138],[165,168,138],[165,168,138]] },  // Sage darkened
+        { pos: 0.40, colors: [[165,168,138],[165,168,138],[165,168,138]] },  // 0.40-0.47: Transition to dark
+        { pos: 0.47, colors: [[32,30,26],[32,30,26],[32,30,26]] },           // 0.47-0.63: DARK ZONE — Process "edit bay"
+        { pos: 0.63, colors: [[32,30,26],[32,30,26],[32,30,26]] },           // 0.63-0.68: Transition dark lifts to warm bronze
+        { pos: 0.68, colors: [[216,176,158],[216,176,158],[216,176,158]] },  // 0.68-0.78: Light Bronze / Dusty Rose
+        { pos: 0.78, colors: [[210,185,175],[210,185,175],[210,185,175]] },
+        { pos: 0.78, colors: [[210,185,175],[210,185,175],[210,185,175]] },  // 0.78-0.88: Transition to dark close
+        { pos: 0.88, colors: [[24,20,18],[24,20,18],[24,20,18]] },           // 0.88-1.00: Near-black cinematic close
+        { pos: 1.00, colors: [[24,20,18],[24,20,18],[24,20,18]] },
       ];
     }
   }
