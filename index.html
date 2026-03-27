@@ -358,29 +358,6 @@ nav {
   color: rgba(244,237,228,0.5);
 }
 
-/* ── STAT TICKER ── */
-.stat-ticker {
-  background: var(--accent);
-  padding: 20px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  position: relative;
-  z-index: 1;
-}
-.stat-ticker-track {
-  display: flex; gap: 48px; align-items: center;
-  animation: scroll-marquee 15s linear infinite;
-  width: max-content;
-}
-.stat-ticker-track span {
-  font-family: var(--mono); font-weight: 500; font-size: 13px;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: #fff;
-}
-.stat-ticker-track .ticker-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: rgba(255,255,255,0.4); flex-shrink: 0;
-}
 
 /* ── STATS ROW ── */
 .stats-row {
@@ -1272,25 +1249,6 @@ body.overlay-open { overflow: hidden; }
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════ -->
-<!--  STAT TICKER                            -->
-<!-- ═══════════════════════════════════════ -->
-<section class="stat-ticker">
-  <div class="stat-ticker-track">
-    <span>327+ Videos</span><div class="ticker-dot"></div>
-    <span>47.8M Views</span><div class="ticker-dot"></div>
-    <span>1.9M Watch Hours</span><div class="ticker-dot"></div>
-    <span>194K Subscribers</span><div class="ticker-dot"></div>
-    <span>Fortune 500 Clients</span><div class="ticker-dot"></div>
-    <span>10+ Years</span><div class="ticker-dot"></div>
-    <span>327+ Videos</span><div class="ticker-dot"></div>
-    <span>47.8M Views</span><div class="ticker-dot"></div>
-    <span>1.9M Watch Hours</span><div class="ticker-dot"></div>
-    <span>194K Subscribers</span><div class="ticker-dot"></div>
-    <span>Fortune 500 Clients</span><div class="ticker-dot"></div>
-    <span>10+ Years</span><div class="ticker-dot"></div>
-  </div>
-</section>
 
 <!-- ═══════════════════════════════════════ -->
 <!--  STATS (Hero-scale numbers)             -->
