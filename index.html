@@ -452,6 +452,106 @@ nav {
 }
 
 
+/* ── AI PIPELINE SECTION ── */
+.ai-pipeline {
+  position: relative;
+  background: var(--dark);
+  color: var(--cream);
+  padding: 140px 48px;
+  overflow: hidden;
+  z-index: 1;
+}
+.ai-pipeline .section-title-row {
+  max-width: 680px;
+  margin-bottom: 80px;
+}
+.ai-pipeline .kicker {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+}
+.ai-pipeline h2 {
+  font-family: var(--serif); font-size: 4.5vw; letter-spacing: -0.03em;
+  line-height: 1.1; margin-bottom: 24px;
+}
+.ai-pipeline .section-lead {
+  font-family: var(--sans); font-weight: 400; font-size: 17px;
+  color: rgba(244,237,228,0.7); line-height: 1.7; max-width: 560px;
+}
+
+/* Outcomes row */
+.ai-outcomes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  margin-bottom: 80px;
+}
+.ai-outcome {
+  border-top: 1px solid rgba(244,237,228,0.1);
+  padding-top: 32px;
+}
+.ai-outcome-num {
+  font-family: var(--serif); font-size: 3.5vw;
+  color: var(--accent); line-height: 1; margin-bottom: 12px;
+}
+.ai-outcome h3 {
+  font-family: var(--serif); font-size: 22px;
+  color: var(--cream); margin-bottom: 12px; line-height: 1.3;
+}
+.ai-outcome p {
+  font-family: var(--sans); font-weight: 400; font-size: 15px;
+  color: rgba(244,237,228,0.6); line-height: 1.7;
+}
+
+/* Pipeline flow visual */
+.ai-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 48px 0;
+  border-top: 1px solid rgba(244,237,228,0.06);
+}
+.ai-flow-step {
+  flex: 1;
+  text-align: center;
+  padding: 24px 16px;
+}
+.ai-flow-step-icon {
+  font-family: var(--mono); font-size: 24px;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+.ai-flow-step h4 {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+}
+.ai-flow-step p {
+  font-family: var(--sans); font-weight: 400; font-size: 13px;
+  color: rgba(244,237,228,0.5); line-height: 1.5;
+}
+.ai-flow-arrow {
+  font-family: var(--mono); font-size: 18px;
+  color: rgba(244,237,228,0.2);
+  flex-shrink: 0;
+  padding: 0 4px;
+}
+
+/* Bottom tagline */
+.ai-pipeline-tagline {
+  font-family: var(--sans); font-style: italic; font-weight: 400;
+  font-size: 16px; color: rgba(244,237,228,0.5);
+  margin-top: 48px; padding-top: 32px;
+  border-top: 1px solid rgba(244,237,228,0.06);
+}
+
+@media (max-width: 768px) {
+  .ai-pipeline { padding: 100px 24px; }
+  .ai-pipeline h2 { font-size: 8vw; }
+  .ai-outcomes { grid-template-columns: 1fr; gap: 32px; }
+  .ai-outcome-num { font-size: 10vw; }
+  .ai-flow { flex-direction: column; }
+  .ai-flow-arrow { transform: rotate(90deg); }
+}
+
 /* ── STATS ROW ── */
 .stats-row {
   display: flex; justify-content: center; gap: 80px;
@@ -1382,6 +1482,67 @@ body.overlay-open { overflow: hidden; }
 
 
 <!-- ═══════════════════════════════════════ -->
+<!--  AI PIPELINE                            -->
+<!-- ═══════════════════════════════════════ -->
+<section class="ai-pipeline" id="ai-pipeline">
+  <div class="section-title-row">
+    <div class="kicker">AI-Powered Post</div>
+    <h2>Assembly is the bottleneck. I automate it.</h2>
+    <p class="section-lead">
+      Most editors spend more time syncing, matching, and organizing than actually editing. I build custom AI tools around your workflow and series — so the repetitive work runs itself, and your team stays in the creative.
+    </p>
+  </div>
+
+  <div class="ai-outcomes">
+    <div class="ai-outcome">
+      <div class="ai-outcome-num">10x</div>
+      <h3>Days become hours</h3>
+      <p>A rough cut that takes a full day to assemble builds in minutes. The AI watches the footage, reads the script, and matches them — beat by beat.</p>
+    </div>
+    <div class="ai-outcome">
+      <div class="ai-outcome-num">0%</div>
+      <h3>Busywork for editors</h3>
+      <p>Syncing, take sorting, b-roll matching, subtitle alignment — all automated. Editors open a timeline that's ready for creative decisions, not clerical ones.</p>
+    </div>
+    <div class="ai-outcome">
+      <div class="ai-outcome-num">1 = 3</div>
+      <h3>One editor, triple output</h3>
+      <p>Without the burnout, without the budget. Repeatable series get custom pipelines tuned to the format — not generic AI, your specific workflow.</p>
+    </div>
+  </div>
+
+  <div class="ai-flow">
+    <div class="ai-flow-step">
+      <div class="ai-flow-step-icon">&#9654;</div>
+      <h4>Raw footage</h4>
+      <p>Multi-cam, ext audio, any format</p>
+    </div>
+    <div class="ai-flow-arrow">→</div>
+    <div class="ai-flow-step">
+      <div class="ai-flow-step-icon">&#128065;</div>
+      <h4>AI watches + reads</h4>
+      <p>Vision models scan frames, transcripts align to script</p>
+    </div>
+    <div class="ai-flow-arrow">→</div>
+    <div class="ai-flow-step">
+      <div class="ai-flow-step-icon">&#9776;</div>
+      <h4>Timeline assembly</h4>
+      <p>Beats matched, takes ranked, rough cut built</p>
+    </div>
+    <div class="ai-flow-arrow">→</div>
+    <div class="ai-flow-step">
+      <div class="ai-flow-step-icon">&#127916;</div>
+      <h4>Ready to edit</h4>
+      <p>Opens in Premiere, ready for the creative pass</p>
+    </div>
+  </div>
+
+  <p class="ai-pipeline-tagline">
+    Custom tools built around your series, your format, your team's workflow — not the other way around.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
 <!--  STATS (Hero-scale numbers)             -->
 <!-- ═══════════════════════════════════════ -->
 <section class="stats-row" id="statsMap">
@@ -1811,6 +1972,22 @@ gsap.from('.ai-teaser p', {
     gsap.set(el, { opacity: 0, y: 20 });
   });
 })();
+
+// ══════════════════════════════════════════
+// AI PIPELINE SECTION REVEAL
+// ══════════════════════════════════════════
+gsap.from('.ai-pipeline .section-title-row > *', {
+  opacity: 0, y: 30, duration: 0.7, stagger: 0.15,
+  scrollTrigger: { trigger: '.ai-pipeline', start: 'top 70%' }
+});
+gsap.from('.ai-outcome', {
+  opacity: 0, y: 40, duration: 0.6, stagger: 0.2,
+  scrollTrigger: { trigger: '.ai-outcomes', start: 'top 75%' }
+});
+gsap.from('.ai-flow-step, .ai-flow-arrow', {
+  opacity: 0, x: -20, duration: 0.4, stagger: 0.12,
+  scrollTrigger: { trigger: '.ai-flow', start: 'top 80%' }
+});
 
 // ══════════════════════════════════════════
 // PROCESS STEPS STAGGER
