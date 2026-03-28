@@ -301,7 +301,7 @@ nav {
 .work-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 280px 280px 280px;
+  grid-template-rows: 280px 280px 320px;
   gap: 16px;
 }
 
@@ -1316,7 +1316,7 @@ body.overlay-open { overflow: hidden; }
     <!-- YouTube: featured, spans 2 cols + 2 rows -->
     <div class="work-card featured yt" role="button" tabindex="0" onclick="openProject('youtube')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject('youtube')}">
       <div class="work-card-visual">
-        <img src="https://img.youtube.com/vi/TRZfpRF0__0/maxresdefault.jpg" alt="Paris apartment tour — YouTube Content Engine" loading="lazy">
+        <img src="https://img.youtube.com/vi/_A8q_czeUak/sddefault.jpg" alt="House tour — YouTube Content Engine" loading="lazy">
       </div>
       <div class="work-card-label">
         <h3>YouTube Content Engine</h3>
@@ -1348,7 +1348,7 @@ body.overlay-open { overflow: hidden; }
     <!-- Branded: bottom left -->
     <div class="work-card branded" role="button" tabindex="0" onclick="openProject('branded')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject('branded')}">
       <div class="work-card-visual">
-        <img src="https://img.youtube.com/vi/_A8q_czeUak/maxresdefault.jpg" alt="House tour — Branded Content" loading="lazy">
+        <img src="https://img.youtube.com/vi/TRZfpRF0__0/sddefault.jpg" alt="Paris apartment — Branded Content" loading="lazy">
       </div>
       <div class="work-card-label">
         <h3>Branded Content</h3>
@@ -1364,7 +1364,7 @@ body.overlay-open { overflow: hidden; }
     <!-- Documentary: bottom right, spans 2 cols -->
     <div class="work-card doc" role="button" tabindex="0" onclick="openProject('documentary')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject('documentary')}">
       <div class="work-card-visual">
-        <img src="https://img.youtube.com/vi/tdCBWst5A2U/maxresdefault.jpg" alt="Feature Documentary" loading="lazy">
+        <img src="https://img.youtube.com/vi/tdCBWst5A2U/sddefault.jpg" alt="Feature Documentary" loading="lazy">
       </div>
       <div class="work-card-label">
         <h3>Feature Documentary</h3>
@@ -1899,8 +1899,8 @@ document.addEventListener('mousemove', e => {
 
 // Hover-to-play video previews on work cards
 const cardVideos = {
-  yt: 'https://www.youtube.com/embed/TRZfpRF0__0?autoplay=1&mute=1&controls=0&loop=1&playlist=TRZfpRF0__0&start=5&modestbranding=1&showinfo=0',
-  branded: 'https://www.youtube.com/embed/_A8q_czeUak?autoplay=1&mute=1&controls=0&loop=1&playlist=_A8q_czeUak&start=3&modestbranding=1&showinfo=0',
+  yt: 'https://www.youtube.com/embed/_A8q_czeUak?autoplay=1&mute=1&controls=0&loop=1&playlist=_A8q_czeUak&start=5&modestbranding=1&showinfo=0',
+  branded: 'https://www.youtube.com/embed/TRZfpRF0__0?autoplay=1&mute=1&controls=0&loop=1&playlist=TRZfpRF0__0&start=3&modestbranding=1&showinfo=0',
   doc: 'https://www.youtube.com/embed/tdCBWst5A2U?autoplay=1&mute=1&controls=0&loop=1&playlist=tdCBWst5A2U&start=10&modestbranding=1&showinfo=0',
 };
 
