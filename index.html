@@ -253,34 +253,82 @@ nav {
 }
 .brands-section:hover .marquee-track { animation-play-state: paused; }
 
-/* ── AI TEASER ── */
+/* ── AI VIDEO TEASER ── */
 .ai-teaser {
   position: relative;
-  padding: 120px 48px;
-  text-align: center;
+  padding: 100px 48px;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
-.ai-teaser .kicker {
+.ai-teaser-video {
+  flex: 1;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a1918;
+  aspect-ratio: 16/9;
+}
+.ai-teaser-video video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ai-teaser-video .video-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px;
+  background: linear-gradient(135deg, #1a1918 0%, #2a2520 100%);
+}
+.ai-teaser-video .video-placeholder .play-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 24px;
+}
+.ai-teaser-video .video-placeholder span {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(244,237,228,0.5);
+}
+.ai-teaser-text {
+  flex: 1;
+  max-width: 440px;
+}
+.ai-teaser-text .kicker {
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 24px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
 }
-.ai-teaser h2 {
-  font-family: var(--serif); font-size: 4.5vw; line-height: 1.1;
-  letter-spacing: -0.03em; color: var(--text); margin-bottom: 24px;
-  max-width: 800px; margin-left: auto; margin-right: auto;
+.ai-teaser-text h2 {
+  font-family: var(--serif); font-size: 3.2vw; line-height: 1.1;
+  letter-spacing: -0.03em; color: var(--text); margin-bottom: 20px;
 }
-.ai-teaser p {
-  font-family: var(--sans); font-weight: 400; font-size: 17px;
-  color: var(--text-muted); max-width: 520px;
-  margin: 0 auto 32px; line-height: 1.7;
+.ai-teaser-text p {
+  font-family: var(--sans); font-weight: 400; font-size: 16px;
+  color: var(--text-muted); line-height: 1.7; margin-bottom: 24px;
 }
-.ai-teaser-link {
+.ai-teaser-text .ai-teaser-link {
   font-family: var(--mono); font-size: 12px;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--accent); text-decoration: none;
   transition: color 0.3s, letter-spacing 0.3s;
 }
-.ai-teaser-link:hover { color: var(--text); letter-spacing: 0.16em; }
+.ai-teaser-text .ai-teaser-link:hover { color: var(--text); letter-spacing: 0.16em; }
+
+@media (max-width: 768px) {
+  .ai-teaser {
+    flex-direction: column;
+    padding: 80px 24px;
+    gap: 40px;
+  }
+  .ai-teaser-text { max-width: 100%; }
+  .ai-teaser-text h2 { font-size: 7vw; }
+}
 
 /* ── WORK SECTION (BENTO GRID) ── */
 .work-section {
@@ -1394,13 +1442,22 @@ body.overlay-open { overflow: hidden; }
 <!--  AI TEASER                              -->
 <!-- ═══════════════════════════════════════ -->
 <section class="ai-teaser" style="position:relative;">
-  <div class="section-num">01</div>
-  <div class="kicker">The AI Edge</div>
-  <h2>Custom AI tools run the repetitive work. I run the creative.</h2>
-  <p>
-    Building tools that connect editorial intelligence to production pipelines — from automated transcription to AI-driven content analysis.
-  </p>
-  <a href="#process" class="ai-teaser-link">See how it works &darr;</a>
+  <div class="ai-teaser-video">
+    <!-- SWAP: Replace placeholder with Bunny CDN video once recorded -->
+    <!-- <video autoplay loop muted playsinline src="https://your-bunny-url/ai-teaser.mp4"></video> -->
+    <div class="video-placeholder">
+      <div class="play-icon">&#9654;</div>
+      <span>Video coming soon — 30s</span>
+    </div>
+  </div>
+  <div class="ai-teaser-text">
+    <div class="kicker">The AI Edge</div>
+    <h2>I build tools that edit for you.</h2>
+    <p>
+      Custom AI pipelines that watch your footage, read your script, and assemble the rough cut — built around your series, your format, your workflow.
+    </p>
+    <a href="#ai-pipeline" class="ai-teaser-link">See how it works ↓</a>
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════════ -->
@@ -1862,17 +1919,13 @@ document.querySelectorAll('.section-num').forEach(el => {
 // ══════════════════════════════════════════
 // AI TEASER REVEAL
 // ══════════════════════════════════════════
-gsap.from('.ai-teaser .kicker', {
-  opacity: 0, y: 20, duration: 0.6,
-  scrollTrigger: { trigger: '.ai-teaser', start: 'top 75%' }
-});
-gsap.from('.ai-teaser h2', {
-  opacity: 0, y: 30, duration: 0.8,
+gsap.from('.ai-teaser-video', {
+  opacity: 0, x: -40, duration: 1,
   scrollTrigger: { trigger: '.ai-teaser', start: 'top 70%' }
 });
-gsap.from('.ai-teaser p', {
-  opacity: 0, y: 20, duration: 0.6,
-  scrollTrigger: { trigger: '.ai-teaser', start: 'top 65%' }
+gsap.from('.ai-teaser-text > *', {
+  opacity: 0, y: 25, duration: 0.6, stagger: 0.12,
+  scrollTrigger: { trigger: '.ai-teaser-text', start: 'top 75%' }
 });
 
 // ══════════════════════════════════════════
