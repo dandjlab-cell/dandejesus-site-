@@ -337,6 +337,28 @@ nav {
   object-fit: cover;
 }
 
+/* BlackRock placeholder gradient */
+.work-card-visual.blackrock-bg {
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+}
+.work-card-visual.blackrock-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 70%, rgba(201,168,76,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(201,168,76,0.08) 0%, transparent 40%);
+}
+
+/* Hover video preview */
+.work-card-visual video {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.work-card:hover .work-card-visual video {
+  opacity: 1;
+}
+
 /* Category accent bar */
 .work-card::before {
   content: '';
@@ -1293,7 +1315,9 @@ body.overlay-open { overflow: hidden; }
 
     <!-- YouTube: featured, spans 2 cols + 2 rows -->
     <div class="work-card featured yt" role="button" tabindex="0" onclick="openProject('youtube')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject('youtube')}">
-      <div class="work-card-visual"></div>
+      <div class="work-card-visual">
+        <img src="https://img.youtube.com/vi/TRZfpRF0__0/maxresdefault.jpg" alt="Paris apartment tour — YouTube Content Engine" loading="lazy">
+      </div>
       <div class="work-card-label">
         <h3>YouTube Content Engine</h3>
         <div class="stat">327+ videos · 47.8M views · 194K subscribers</div>
@@ -1308,7 +1332,7 @@ body.overlay-open { overflow: hidden; }
 
     <!-- BlackRock: tall, spans 2 rows on right -->
     <div class="work-card tall br" role="button" tabindex="0" onclick="openProject('blackrock')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject('blackrock')}">
-      <div class="work-card-visual"></div>
+      <div class="work-card-visual blackrock-bg"></div>
       <div class="work-card-label">
         <h3>BlackRock Global</h3>
         <div class="stat">Fortune 500 · Multi-format</div>
@@ -1323,7 +1347,9 @@ body.overlay-open { overflow: hidden; }
 
     <!-- Branded: bottom left -->
     <div class="work-card branded" role="button" tabindex="0" onclick="openProject('branded')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject('branded')}">
-      <div class="work-card-visual"></div>
+      <div class="work-card-visual">
+        <img src="https://img.youtube.com/vi/_A8q_czeUak/maxresdefault.jpg" alt="House tour — Branded Content" loading="lazy">
+      </div>
       <div class="work-card-label">
         <h3>Branded Content</h3>
       </div>
@@ -1335,10 +1361,11 @@ body.overlay-open { overflow: hidden; }
       </div>
     </div>
 
-    <!-- Documentary: bottom right — BUT wait, featured takes cols 1-2 and tall takes col 3,
-         so bottom row only has cols 1-2 available. Let this span both. -->
+    <!-- Documentary: bottom right, spans 2 cols -->
     <div class="work-card doc" role="button" tabindex="0" onclick="openProject('documentary')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject('documentary')}">
-      <div class="work-card-visual"></div>
+      <div class="work-card-visual">
+        <img src="https://img.youtube.com/vi/tdCBWst5A2U/maxresdefault.jpg" alt="Feature Documentary" loading="lazy">
+      </div>
       <div class="work-card-label">
         <h3>Feature Documentary</h3>
       </div>
@@ -1870,9 +1897,39 @@ document.addEventListener('mousemove', e => {
   targetY = e.clientY;
 });
 
+// Hover-to-play video previews on work cards
+const cardVideos = {
+  yt: 'https://www.youtube.com/embed/TRZfpRF0__0?autoplay=1&mute=1&controls=0&loop=1&playlist=TRZfpRF0__0&start=5&modestbranding=1&showinfo=0',
+  branded: 'https://www.youtube.com/embed/_A8q_czeUak?autoplay=1&mute=1&controls=0&loop=1&playlist=_A8q_czeUak&start=3&modestbranding=1&showinfo=0',
+  doc: 'https://www.youtube.com/embed/tdCBWst5A2U?autoplay=1&mute=1&controls=0&loop=1&playlist=tdCBWst5A2U&start=10&modestbranding=1&showinfo=0',
+};
+
 document.querySelectorAll('.work-card').forEach(card => {
-  card.addEventListener('mouseenter', () => cursor.classList.add('active'));
-  card.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+  card.addEventListener('mouseenter', () => {
+    cursor.classList.add('active');
+    // Find which card type
+    const type = ['yt', 'branded', 'doc'].find(t => card.classList.contains(t));
+    if (type && cardVideos[type] && !card.querySelector('.hover-video-frame')) {
+      const iframe = document.createElement('iframe');
+      iframe.className = 'hover-video-frame';
+      iframe.src = cardVideos[type];
+      iframe.allow = 'autoplay';
+      iframe.setAttribute('loading', 'lazy');
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;z-index:0;opacity:0;transition:opacity 0.6s ease;pointer-events:none;';
+      card.querySelector('.work-card-visual').appendChild(iframe);
+      // Fade in after brief load delay
+      setTimeout(() => { iframe.style.opacity = '1'; }, 300);
+    }
+  });
+
+  card.addEventListener('mouseleave', () => {
+    cursor.classList.remove('active');
+    const iframe = card.querySelector('.hover-video-frame');
+    if (iframe) {
+      iframe.style.opacity = '0';
+      setTimeout(() => iframe.remove(), 500);
+    }
+  });
 });
 
 // ══════════════════════════════════════════
